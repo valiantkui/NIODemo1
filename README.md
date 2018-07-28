@@ -16,6 +16,8 @@
 
 #### 2.Buffer
 	缓冲区，所谓的缓冲区其实就是在内存中开辟的一段连续空间，用来临时存放数据。
+	
+	![avatar](buffer1.png)
 
 	int capacity();
 	int position();
@@ -43,7 +45,7 @@
 	......
 
 	//5.判断边界
-	int remaning();
+	int remaning(); //相当于limit - position
 	boolean hasRemaning();
 
 	//6.重绕缓冲区
