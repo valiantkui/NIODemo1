@@ -95,12 +95,13 @@
 	Set<SelectionKey> selectedKeys()
 	
 ### 4.Selector设计思想
+
 1. 问题的引入
 ![image](img/model.png)
-使用BIO编写代码模拟一下
-(编写一个服务器端和客户端程序，运行一次服务器程序，运行四次客户端程序模拟四个用户线程)
 
-	
+	使用BIO编写代码模拟一下
+	(编写一个服务器端和客户端程序，运行一次服务器程序，运行四次客户端程序模拟四个用户线程):
+
 	public class BIOServer {
 		public static void main(String[] args) throws Exception {
 			ServerSocket ss = new ServerSocket();
