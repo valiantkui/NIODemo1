@@ -96,21 +96,21 @@
 	
 ### 4.Selector设计思想
 1. 问题的引入
+![image](img/model.png)
+使用BIO编写代码模拟一下
+(编写一个服务器端和客户端程序，运行一次服务器程序，运行四次客户端程序模拟四个用户线程)
 
-	使用BIO编写代码模拟一下
-	(编写一个服务器端和客户端程序，运行一次服务器程序，运行四次客户端程序模拟四个用户线程)
-	![image](img/model.png)
 	
 	public class BIOServer {
-	public static void main(String[] args) throws Exception {
-		ServerSocket ss = new ServerSocket();
-		ss.bind(new InetSocketAddress(7777));
-		while(true){
-			Socket sk = ss.accept();
-			new Thread(new ServiceRunner(sk)).start();
+		public static void main(String[] args) throws Exception {
+			ServerSocket ss = new ServerSocket();
+			ss.bind(new InetSocketAddress(7777));
+			while(true){
+				Socket sk = ss.accept();
+				new Thread(new ServiceRunner(sk)).start();
+			}
 		}
-	}
-	}
+		}
 	class ServiceRunner implements Runnable{
 		private Socket sk;
 		public ServiceRunner(Socket sk){
@@ -142,6 +142,7 @@
 
 #### 分析该模式的缺点：
 ![image](img/model.png)
+
 	缺点1：每增加一个用户请求，就会创建一个新的线程为之提供服务。当用户请求量特别巨大，线程数量就会随之增大，继而内存的占用增大，所有不适用于高并发、高访问的场景。
 	缺点2：线程特别多，不仅占用内存开销，也会占用大量的cpu开销，因为cpu要做线程调度。
 	缺点3：如果一个用户仅仅是连入操作，并且长时间不做其他操作，会产生大量闲置线程。会使cpu做无意义的空转，降低整体性能。
@@ -156,6 +157,7 @@
 	监听哪个用户执行操作，就唤醒对应的线程执行。那么都有哪些事件呢？
 	事件：1.accept事件、2.connect事件、3.read事件、4.write事件
 ![image](img/model21.png)
+
 	针对缺点1和缺点2，可以利用非阻塞模型来实现，利用少量线程甚至一个线程来处理多用户请求。但是注意，这个模型是有使用场景的，适用于大量短请求场景。（比如用户访问电商网站），不适合长请求场景（比如下载大文件，这种场景，NIO不见得比BIO好）
 
 ![image](img/model3.png)
